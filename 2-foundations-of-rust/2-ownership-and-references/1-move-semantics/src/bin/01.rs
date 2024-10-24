@@ -16,6 +16,5 @@ fn append_to_string(s: String) -> String {
     s.push_str("Hello");
     s.push_str(" ");
     s.push_str("World");
-
     s
 }
