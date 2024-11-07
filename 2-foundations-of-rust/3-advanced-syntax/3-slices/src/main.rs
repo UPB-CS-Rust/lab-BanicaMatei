@@ -7,11 +7,11 @@
 // 3. EXTRA: try changing the type from i32 into String everywhere; does your program still compile? What changes are necessary?
 
 /// Merge two array slices (that have to be sorted) into a vector
-fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
+fn merge(a: &mut [i32], b: &mut [i32]) -> Vec<i32> {
     let mut dest = Vec::new();
 
-    let a_idx = 0;
-    let b_idx = 0;
+    let mut a_idx = 0;
+    let mut b_idx = 0;
 
     while a_idx < a.len() && b_idx < b.len() {
         if a[a_idx] <= b[b_idx] {
@@ -23,11 +23,11 @@ fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
         }
     }
 
-    for elem in a[a_idx..] {
-        dest.push(elem)
+    for elem in &mut a[a_idx..] {
+        dest.push(*elem)
     }
-    for elem in b[b_idx..] {
-        dest.push(elem)
+    for elem in &mut b[b_idx..] {
+        dest.push(*elem)
     }
 
     dest
@@ -35,12 +35,15 @@ fn merge(a: &[i32], b: &[i32]) -> Vec<i32> {
 
 /// Take an array slice, and sort into a freshly constructed vector using the above function
 fn merge_sort(data: &[i32]) -> Vec<i32> {
-    if data.len() > 1 {
-        // implement this
-        todo!()
-    } else {
-        data.to_vec()
+    if data.len() <= 1 {
+        return data.to_vec();
     }
+
+    let mid = data.len() / 2;
+    let mut left = merge_sort(&data[..mid]);
+    let mut right = merge_sort(&data[mid..]);
+
+    merge(&mut left, & mut right)
 }
 
 /// Read a bunch of numbers from standard input into a Vec<i32>.
@@ -80,3 +83,4 @@ mod test {
 	assert_eq!(merge_sort(&[6,47,42,5,1,123]), vec![1,5,6,42,47,123]);
     }
 }
+
